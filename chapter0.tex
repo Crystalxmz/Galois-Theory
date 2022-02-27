@@ -1,0 +1,334 @@
+\setcounter{chapter}{-1}
+\chapter{群环域概略}
+本章是抽象代数的基本知识纲要,可看做群环域内容的最小闭包,仅可作为手册查阅.如需深入学习需翻阅抽象代数教材,辅以大量例子和习题.本章大量参考\cite{FK}\cite{LW}.
+\section{群}
+\begin{definition}\label{def:monoid}\index{banqun@半群 (semigroup)}
+	集合$S$和$S$上满足结合律的二元运算 $\cdot$ 所形成的代数结构叫做\textbf{半群}.这个半群记成$(S,\cdot)$或者简记成$S$,运算$x\cdot y$也尝尝简写成$xy$.与任何元素相乘等于自身的称为\textbf{幺元},若含有幺元则称为\textbf{幺半群}\index{banqun@半群 (semigroup)!幺半群 (monoid)},幺元通常记作$e$或 $1$.若满足交换律则称为\textbf{交换半群}.
+\end{definition}
+\begin{example}
+	$(\mathbb{Z},-)$不满足结合律,故不是半群.
+\end{example}
+
+对于交换幺半群,惯例是将其二元运算 $\cdot$ 写成加法 $+$,并将幺元$1$写成$0$,元素$x$的逆写成$-x$;但一些场合仍适用乘法记号.必要时另外申明.
+\begin{definition}\label{def:group}\index{qun@群 (group)}
+	与任何元素相乘等于幺元的称为\textbf{逆元},若含幺半群$(G,\cdot)$中每一个元素都存在逆元,则$G$叫做\textbf{群}.若满足交换律则称为\textbf{交换群}或\textbf{Abel群}\index{qun@群 (group)!Abel群 (Abel group)}.
+\end{definition}
+
+简言之,群内的元素满足封闭性,结合律,含幺元,含逆元四个性质.其中逆元往往难以满足,结合律通常难以验证.向量空间的前四条性质即是群的定义.
+\begin{example}
+	一个拓扑$(\tau,\cup)$是一个幺半群,而拓扑$(\tau,\triangle)$是一个群.单位元都为$\varnothing$,后者逆元为自身,亦即$\forall A\in\tau,A^2=\varnothing$,该群每一个非单位元的阶都为2.此为群中的拓扑,反之,拓扑中亦有群,称为\href{https://en.wikipedia.org/wiki/Topological_group}{\textbf{拓扑群}}.
+\end{example}
+\begin{definition}
+	设 $G$ 为群, 子集 $H \subset G$ 被称为 $G$ 的\textbf{子群}\index{qun@群 (group)!子群 (subgroup)}, 如果
+	\begin{enumerate}
+		\item $H$ 是子幺半群,
+		\item 对任意 $x \in H$ 有 $x^{-1} \in H$.
+	\end{enumerate}
+	表示成$H\leqslant G$.假若子群 $H$ 对所有 $x \in G$ 满足 $xH = Hx$, 则称 $H$ 为 $G$ 的\textbf{正规子群}\index{qun@群 (group)!子群 (subgroup)!正规子群 (normal subgroup)}, 记作 $H \lhd G$. 子群 $\{1\} \lhd G$ 称作 $G$ 的\textbf{平凡子群}.
+\end{definition}
+\begin{definition}\index{jie@阶 (order)}
+	\begin{enumerate}
+		\item 一个群的\textbf{阶}是指其势,即其元素的个数,记为$|G|$;
+		\item 一个群内的一个元素$a$之\textbf{阶}(有时称为\textbf{周期}）是指会使得$a^m = e$的最小正整数$m$.若没有此数存在,则称$a$有无限阶.有限群的所有元素有有限阶,记为$\ord a$.
+	\end{enumerate}
+\end{definition}
+\begin{example}\label{eg:cyclic-group}\index{qun@群 (group)!循环群 (cyclic group)}
+	包含$x$的最小群叫做由$x$\textbf{生成}的群,记作$\langle x\rangle$.若群 $G$ 中存在元素 $x$ 使得 $G = \langle x\rangle$, 则称 $G$ 为\textbf{循环群}. 循环群又叫单位生成群,且都同构于$\mathbb{Z}$的子群.
+\end{example}
+\begin{example}\label{eg:symmetric-group}\index{qun@群 (group)!对称群 (symmetric group)}\index{qun@群 (group)!置换群 (permutation group)}\index{qun@群 (group)!交错群 (alternating group)}
+	从任意集合 $X$ 映到自身的全体双射构成一个群, 称为 $X$ 上的\textbf{对称群} $\mathfrak{S}_X \coloneqq \Aut(X)$. 其中的二元运算是双射的合成 $(f, g) \mapsto f \circ g$, 幺元为恒等映射 $\identity_X: X \to X$, 而逆元无非是逆映射. 当 $X = \{1, \ldots, n\}$ ($n \in \mathbb{Z}_{\geq 1}$) 时也称为 $n$ 次\textbf{对称群},记为 $\mathfrak{S}_n$\footnote{德文尖角体S,对应德文Symmetrische Gruppe或英文的首字母S.},它的每个子群称作\textbf{置换群}. 注意到 $|\mathfrak{S}_n| = n!$.其所有偶置换元素组成的子群称为\textbf{交错群},记作$\mathfrak{A}_n$\footnote{德文尖角体A,对应德文Alternierende Gruppe或英文的首字母A.},且$\mathfrak{A}_n\lhd \mathfrak{S}_n$.
+\end{example}
+\begin{definition}\label{def:coset}\index{peiji@陪集 (coset)}
+	设 $H$ 为群 $G$ 的子群. 定义:
+	\begin{enumerate}
+		\item \textbf{左陪集}: $G$ 中形如 $xH$ 的子集, 全体左陪集构成的集合记作 $G/H$;
+		\item \textbf{右陪集}: $G$ 中形如 $Hx$ 的子集, 全体右陪集构成的集合记作 $H \backslash G$;
+		\item \textbf{双陪集}: 设 $K$ 为另一子群, 则 $G$ 中形如 $HxK \coloneqq \{hxk : h \in H, k \in K\}$ 的子集称为 $G$ 对 $(H,K)$ 的双陪集, 全体双陪集构成的集合记作 $H \backslash G/K$.
+	\end{enumerate}
+	陪集中的元素称为该陪集的一个代表元. $H \lhd G$ 等价于左,右陪集相同. 由于陪集的左右之分总能从符号辨明, 以下不再申明. 定义 $H$ 在 $G$ 中的\textbf{指数}
+	\[ [G:H] \coloneqq |G/H|. \]
+	陪集空间 $G/H$ 未必有限, 在此视 $[G:H]$ 为基数. 
+\end{definition}
+\begin{theorem}[Lagrange定理]\label{thm:Lagrange}
+	设 $H$ 为 群 $G$ 的子群, 则
+	\begin{enumerate}
+		\item $|G| = [G:H] |H|$, 特别地, 当 $G$ 有限时 $|H|$ 必整除 $|G|$ ;
+		\item 若 $K$ 是 $H$ 的子群, 则 $[G:K] =[G:H][H:K]$.
+	\end{enumerate}
+\end{theorem}
+\begin{corollary}
+	群$G$中任意元素$g$的阶整除$G$的阶,即$\mathrm{ord}\ g\mid|G|$.由此直接得费马小定理.
+\end{corollary}
+
+拉格朗日定理的逆命题并不成立.给定一个有限群$G$和一个整除$G$的阶的整数$d$,$G$并不一定有阶数为$d$的子群.最简单的例子是4次交替群$\mathfrak{A}_4$,它的阶是12,但对于12的因数6, $\mathfrak{A}_4$没有6阶的子群.对于这样的子群的存在性, Cauchy定理和Sylow定理给出了一个部分的回答.
+\begin{definition}
+	设 $G$ 为群.
+	\begin{enumerate}
+		\item $G$ 的\textbf{中心}定义为 $Z_G \coloneqq \{z \in G : \forall x \in G, \; xz=zx\}$
+		\footnote{因其德文Zentrum(注意德文中名词首字母应大写),首字母为Z,也有部分书采用英文center的首字母C表示.};
+		\item 设 $E \subset G$ 为任意子集, 定义其\textbf{中心化子}为 $Z_G(E) \coloneqq \{z \in G : \forall x \in E, \; xz=zx \}$
+		\footnote{因其德文Zentralisator,首字母为Z,也有部分书采用英文centralizer的首字母C表示.};\index{zhongxinhuazi@中心化子 (centralizer)}
+		\item 承上, 定义其\textbf{正规化子}为 $N_G(E) \coloneqq \{n \in G : nEn^{-1} = E \}$\footnote{因其德文Normalisator和英文normalizer,首字母为N.}.\index{zhengguihuazi@正规化子 (normalizer)}
+	\end{enumerate}
+	当 $E$ 是独点集 $\{x\}$ 时, 使用简写 $Z_G(x)$ 和 $N_G(x)$.
+\end{definition}
+
+显然有
+\[
+Z_G=Z_G(G)\leqslant Z_G(E)\leqslant N_G(E)\leqslant G.
+\]
+
+Abel群等价于中心是自身的群. $H\lhd G$等价于$N_G(H)=G$.
+\begin{remark}\label{rem:HN}
+	若 $N, H\leqslant G$, 而且 $H \subset N_G(N)$, 则 $HN = NH$ 是 $G$ 的子群且 $N \lhd HN$. 
+\end{remark}
+\begin{definition}\label{def:morphism}
+设 $M_1, M_2$ 为幺半群. 映射 $\varphi: M_1 \to M_2$ 如满足下述性质即称为\textbf{同态}\index{tongtai@同态 (morphism)}
+\begin{enumerate}
+	\item $\forall x,y \in M_1, \; \varphi(xy) = \varphi(x) \varphi(y)$;
+	\item $\varphi(1)=1$.
+\end{enumerate}
+从 $M_1$ 到 $M_2$ 的同态所成集合写作 $\Hom(M_1, M_2)$.设 $\varphi\in\Hom(M_1, M_2)$.它的\textbf{像}记作 $\Image(\varphi) \coloneqq \{\varphi(x) : x \in M_1\}$, 而其\textbf{核}定义为 \index{he@核 (kernel)}$\Ker(\varphi) \coloneqq \varphi^{-1}(1)$.若$M_1,M_2$是群,则他们分别是$M_1,M_2$的正规子群.
+
+从幺半群 $M$ 映至自身的同态称为\textbf{自同态},自同态全体对加法和复合构成一个环,叫做\textbf{自同态环},记作$\End(M)\coloneqq\Hom(M,M)$.\index{tongtai@同态 (morphism)!自同态 (endomorphism)}同态的合成仍为同态. 取常值 $1$ 的同态称作\textbf{平凡同态}.
+
+若存在同态 $\psi: M_2 \to M_1$ 使得 $\varphi \psi = \identity_{M_2}$, $\psi \varphi = \identity_{M_1}$, 则称 $\varphi$ 可逆而 $\psi$ 是 $\varphi$ 的逆; 可逆同态称作\textbf{同构}\index{tonggou@同构 (isomorphism)},记作$M_1\cong M_2$. 此时我们也称 $M_1$ 与 $M_2$ 同构. 从幺半群映至自身的同构称为\textbf{自同构},自同构全体构成一个群,叫做\textbf{自同构群},它是$\End(M)$的单位群(见\ref{def:unit}),记作$\Aut(M)\coloneqq U(\End(M))$,如恒等映射 $\identity_M\in\Aut(M)$.\index{tonggou@同构 (isomorphism)!自同构 (automorphism)}
+\end{definition}
+\begin{definition}\index{qun@群 (group)!商群 (quotient group)}
+设 $G$ 为群, $N$ 为其正规子群. 在陪集空间 $G/N$ 上定义二元运算
+\[ xN \cdot yN = xy N, \quad x,y \in G. \]
+这使得 $G/N$ 构成一个群, 称为 $G$ 模 $N$ 的\textbf{商群}, 其中的幺元是 $1 \cdot N$ 而逆由 $(xN)^{-1} = x^{-1}N$ 给出. 群同态
+\[
+\pi: G\twoheadrightarrow G/N\footnote{一般用$\hookrightarrow$表示单射,用$\twoheadrightarrow$表示满射.可类比$\subset,\supset$记忆.},\qquad x \mapsto xN
+\]
+称为\textbf{商同态}.
+\end{definition}
+\begin{definition}\index{guidao@轨道 (orbit)}\index{wendinghuazi@稳定化子 (stabilizer)}\index{chuandi@传递 (transitive)}
+	设幺半群 $M$ 作用于 $X$. 定义
+	\begin{enumerate}
+		\item \textbf{不动点}集 $X^M \coloneqq \{x \in X: \forall m \in M, \; mx=x \}$,有时也记作$\mathrm{Fix}_X(M)$;
+		\item 对于 $x \in X$, \textbf{轨道} $Mx \coloneqq \{mx : m \in M \}$, 其元素称为该轨道的代表元, 轨道 $Mx$ 是 $X$ 的 $M$-子集; 若$M$在$X$上的作用只有一个轨道,则称其是\textbf{传递的}或\textbf{可迁的}.
+		\item 承上, 其\textbf{稳定化子}定为 $M$ 的子幺半群 $M_x \coloneqq \{m \in M : mx=x\}$.
+	\end{enumerate}
+\end{definition}
+\begin{theorem}[轨道分解定理]\label{prop:orbit-decomp}
+	设群 $G$ 作用于 $X$, 则
+	\begin{enumerate}
+		\item 有轨道分解 $X = \bigsqcup_x Gx$, 其中我们对每个轨道选定代表元 $x$;
+		\item 对每个 $x \in X$, 映射
+		\[
+			G/G_x \to Gx,\qquad g \cdot G_x \mapsto gx
+		\]
+		是 $G$-集间的同构;
+		\item 特别地, 我们有基数的等式
+		\[ |X| = \sum_x \left[ G: G_x \right]; \]
+		\item 对所有 $x \in X$ 和 $g \in G$, 有
+		\[ G_{gx} = g G_x g^{-1}. \]
+	\end{enumerate}
+\end{theorem}
+\begin{definition}\label{def:conj-action} \index{gonge@共轭 (conjugation)}
+	依旧设 $G$ 为群. 伴随自同构 $\mathrm{Ad}: G \to \Aut(G)$ 给出的作用称为 $G$ 的\textbf{共轭作用} $G \times G \to G$ (在此考虑左作用). 定义展开后无非是
+	\[ (g, x) \longmapsto {}^g x \coloneqq gxg^{-1}. \]
+	共轭作用下的轨道称为 $G$ 中的\textbf{共轭类}.
+\end{definition}
+
+推而广之, 对任意子集 $E \subset G$ 我们业已定义子群 $N_G(E)$, 它在 $E$ 上的作用也叫共轭. 若两子集 $E, E'$ 满足 $\exists g \in G, \; E' = gEg^{-1}$, 则称 $E$ 与 $E'$ 共轭.易知正规子群仅与自身共轭.
+
+非交换群共轭作用的性状一般相当复杂.对于$x \in G$,其稳定化子群正是中心化子$Z_G(x)$,而不动点集则是中心 $Z_G$.剖析$G$的共轭作用是了解其群结构的必由之路.
+\begin{theorem}[同态基本定理]\label{thm:1st-homomorphism}
+	设 $\varphi\in\Hom(G, G')$,则 $\varphi$ 诱导出同构
+	\[
+	\bar{\varphi}: G/\Ker(\varphi) \to \Image(\varphi),\qquad g \cdot \Ker(\varphi)\mapsto\varphi(g).
+	\]
+	此同构叫做\textbf{正则同构}.
+\end{theorem}
+\begin{theorem}[Caylay定理]\label{thm:Caylay}
+	对任意有限群$G$,同态
+	\[
+	\rho:G\to \mathfrak{S}_G,\qquad\rho(g)a=ga
+	\]
+	是单的,故$\Ker(\rho)=\{1\}$,利用同态基本定理得:每个群均同构于某个对称群的子群.
+\end{theorem}
+\begin{theorem}[Cauchy 定理]\label{thm:group-Cauchy}
+	设 $G$ 为有限群, 素数 $p$ 整除 $|G|$, 则存在 $x \in G$ 使得 $\mathrm{ord}\ x=p$.
+\end{theorem}
+\begin{definition}\index{qun@群 (group)!子群 (subgroup)!Sylow $p$-子群 (Sylow $p$-subgroup)}
+设 $G$ 为 $n$ 阶有限群, $p$ 为素数. 设 $p^m \mid n$, 满足 $|H| = p^m$ 的子群 $H$ 称为 $G$ 的 \textbf{Sylow $\bm{p}$-子群}.
+\end{definition}
+\begin{theorem}[Sylow 定理]对任意有限群 $G$ 和任意素数 $p$, 
+	\begin{enumerate}
+		\item $G$ 含有 Sylow $p$-子群.
+		\item 
+		\begin{enumerate}
+			\item 任意 $p$-子群 $H \subset G$ 皆包含于某个 Sylow $p$-子群;
+			\item $G$ 的任两个 Sylow $p$-子群 $P, P'$ 皆共轭;
+		\end{enumerate}
+		特别地, $G$ 中存在正规的 Sylow $p$-子群 当且仅当 $G$ 有唯一的 Sylow $p$-子群.
+		\item $G$ 中 Sylow $p$-子群的个数 $\equiv 1 \pmod p$.
+	\end{enumerate}
+\end{theorem}
+\begin{theorem}[有限生成Abel群结构定理]\label{thm:finitely generated Abel}
+	有限生成Abel群都同构于若干$\mathbb{Z}$子群的直和.
+\end{theorem}
+\section{环和域}
+\begin{definition}\index{huan@环 (ring)}
+	称$(R, +, \cdot)$是\textbf{(含幺)环},如果
+	\begin{enumerate}
+		\item $(R, +)$ 是Abel群, 二元运算用加法符号记作 $(a,b) \mapsto a+b$, 加法幺元记为 $0$, 称之为 $R$ 的加法群;
+		\item $(R, \cdot)$ 是含幺半群;
+		\item $a(b+c) = ab+ac$, $(b+c)a = ba + ca$ \quad (分配律, 或曰双线性)
+	\end{enumerate}
+
+	除去和幺元相关性质得到的 $(R, +, \cdot)$ 称作无幺环.若子集 $S \subset R$ 对 $(+, \cdot)$ 也构成环, 并且和 $R$ 共用同样的乘法幺元 $1$, 则称 $S$ 为 $R$ 的\textbf{子环}\index{huan@环 (ring)!子环 (subring)}, 或称 $R$ 是 $S$ 的环扩张或扩环.若乘法也满足交换律则称为\textbf{交换环}.\index{huan@环 (ring)!交换环 (commutative ring)}
+\end{definition}
+\begin{example}
+	一般将有限个元素 $r_1, \ldots, r_n \in R$ 生成的环记为 $\langle r_1, \ldots, r_n\rangle$. 在交换环的情形也习惯写作 $(r_1, \ldots, r_n)$.零环$(0)$是无幺环,也是平凡环.
+\end{example}
+\begin{definition}\index{tongtai@同态 (morphism)}
+	设 $R, S$ 为环, 映射 $\varphi: R \to S$ 为\textbf{环同态},如果$\varphi$是加法群同态,且为乘法幺半群同态.如去掉与 $1_R$, $1_S$ 相关的条件, 就得到无幺环之间的同态概念.
+\end{definition}
+
+由此可导出环的同构 (即可逆同态), 自同态, 自同构,像与核等概念,与\ref{def:morphism}同一套路, 不再赘述.
+
+\begin{definition}\label{def:ideals}\index{lixiang@理想 (ideal)}
+	设 $R$ 为环, $I \subset R$ 为加法子群.
+	\begin{enumerate}
+		\item 若对每个 $r \in R$ 皆有 $rI \subset I$, 则称 $I$ 为 $R$ 的\textbf{左理想};
+		\item 若对每个 $r \in R$ 皆有 $Ir \subset I$, 则称 $I$ 为 $R$ 的\textbf{右理想};
+		\item 若 $I$ 兼为左, 右理想, 则称作\textbf{双边理想}.
+	\end{enumerate}
+	满足 $I \neq R$ 的左, 右或双边理想称为真理想. 交换环的左,右理想不分,与双边理想一起简称为理想.
+\end{definition}
+\begin{definition}
+	设 $I$ 为 $R$ 的理想, 赋予加法群 $R/I$ 乘法运算如下
+	\[ (r+I) \cdot (s+I) \coloneqq (rs + I), \quad r, s \in R. \]
+	则 $R/I$ 构成一个环, 称为 $R$ 模 $I$ 的\textbf{商环}. 商映射 $R \twoheadrightarrow R/I$ 称为\textbf{商同态}.
+\end{definition}
+\begin{theorem}[环同态基本定理]\label{thm:1st-homomorphism-ring}
+	设 $\varphi\in\Hom(R, R')$, 则 $\Ker(\varphi) \coloneqq \varphi^{-1}(0)$ 是 $R$ 的理想, 且诱导同态 $\bar{\varphi}: R/\Ker(\varphi) \to \Image(\varphi)$ 是环同构.
+\end{theorem}
+\begin{definition}\label{def:unit}
+	既然 $R$ 对乘法构成幺半群, 故可定义其中元素的左逆与右逆. 设 $r \in R$ 非零, 若 $r$ 可逆, 其逆记为 $r^{-1}$; 全体可逆元构成的乘法群称作\textbf{单位}\index{danwei@单位 (unit)},记作$U(R)$,有时也简记 $R^\times$. 若存在 $r' \neq 0$ 使得 $rr'=0$ 则称 $r$ 为\textbf{左零因子}; 条件改作 $r'r=0$ 则称\textbf{右零因子}. 为 $R$ 中左或右零因子的元素统称为\textbf{零因子}. 元素 $r \in R-\{0\}$ 非左零因子当且仅当 $r$ 的左乘满足消去律; 右零因子的情形类似.\index{lingyinzi@零因子 (zero divisor)}
+\end{definition}
+\begin{definition}\label{def:ring-characteristic}\index{tezheng@特征 (characteristic)}
+	设 $R$ 非零环, 定义其\textbf{特征}为加法群元素的最大阶,记为 $\text{char}(R)$.若含有无限阶元素则特征记为$0$.
+\end{definition}
+\begin{example}[Frobenius自同态]
+	对于特征$p$域$K$,利用二项式定理和数论中的有关结论可知$\forall x,y\in K$,令$f(x)=x^p$,则
+	\[
+	f(x+y)=\left(x+y\right)^p=x^p+y^p=f(x)+f(y),
+	\]
+	故$f$是$K$上的自同态.
+\end{example}
+\begin{definition}\label{def:field}\index{huan@环 (ring)!整环 (integral domain)}\index{huan@环 (ring)!除环 (division ring)}\index{yu@域 (field)}
+	无零因子的交换环称为\textbf{整环}.若环 $R$ 中的每个非零元皆可逆, 则称 $R$ 为\textbf{除环}. 交换除环称为\textbf{域}\footnote{1871年德国数学家戴德金提出Körper的概念,因此也有书中用$K$指代域而非$F$.在德语里该词意为``体'',故日本和港澳台地区从德文直译为汉字``体'',与大陆有所不同.1893年由美国数学家摩尔将Körper翻译为field,而大陆所采用的翻译由英语转译为域.}.可类似定义\textbf{子除环}和\textbf{子域}.
+\end{definition}
+\begin{example}
+按本节的约定, 除环不能是零环,四元数$\mathbb{H}$是除环; 某些文献将除环称作\textbf{斜域}(skew field)或\textbf{体},但因体在不同地区有歧义,所以尽量避免使用体这一说法.
+\end{example}
+\begin{proposition}
+	无零因子的有限环必为除环.
+\end{proposition}
+\begin{theorem}[Wedderburn小定理]
+	对于有限环,整环等价于除环等价于域.
+\end{theorem}
+\begin{definition}\index{chengxingziji@乘性子集 (multiplicative subset)} \index{jubuhua@局部化 (localization)}
+	设 $R$ 为交换环. 子集 $S \subset R$ 若对环的乘法构成幺半群, 则称 $S$ 为 $R$ 的\textbf{乘性子集}. 构作对乘性子集 $S$ 的\textbf{局部化} $R[S^{-1}]$ 如下. 首先在集合 $R \times S$ 上定义关系
+	\[
+	(r,s) \sim (r',s') \Leftrightarrow \left[ \exists t \in S, trs' = tr's \right]. 
+	\]
+	易证 $\sim$ 是等价关系, 相应的商集记为 $R[S^{-1}]$, 其中的等价类 $[r,s]$ 应该设想为``商'' $r/s$, 且对任意 $t \in S$ 皆有 $[r,s]=[rt,st]$. 以下定义的环运算因而是顺理成章的:
+	\begin{gather*}
+		[r,s] + [r',s'] = [rs' + r's, ss'], \\
+		[r,s] \cdot [r',s'] = [rr', ss'].
+	\end{gather*}
+	$R[S^{-1}]$ 对此成交换环, 零元为 $0 = [0, s]$ 而幺元为 $1 = [s,s]$, 其中 $s \in S$ 可任取. 由此得到
+	\begin{gather*}\label{eqn:localization-zero}
+		[r,s]=0 \Leftrightarrow \left[ \exists t \in S, tr=0 \right].
+	\end{gather*}
+	因此 $R[S^{-1}]$ 是零环当且仅当存在 $s \in S$ 使得 $sR=0$, 我们既假定 $R$ 含幺元, 这也相当于说 $0 \in S$; 一般总排除这种情形. 
+	
+	另一方面, $r \mapsto [r,1]$ 给出环同态 $R \to R[S^{-1}]$. 注意到 $s \in S$ 的像落在 $R[S^{-1}]^\times$ 中, 其逆无非是 $[1,s]$. 局部化应当同态射 $R \to R[S^{-1}]$ 一并考量.
+\end{definition}
+\begin{lemma}\label{prop:localization-units}
+	设 $S \subset R$ 为乘性子集, $0 \notin S$, 则 $[r,s] \in R[S^{-1}]$ 可逆当且仅当存在 $r_1 \in R$ 使得 $rr_1 \in S$.
+\end{lemma}
+\begin{proof}
+	若 $rr_1 \in S$ 则 $[r,s] [r_1 s, rr_1] = 1$. 反之设存在 $[r',s']$ 使得 $[r,s][r',s'] = 1$, 则存在 $t \in S$ 使得 $trr' = tss'$, 因而 $r(tr') \in S$. 
+\end{proof}
+
+原环 $R$ 的部分信息可能在局部化过程中丢失. 可知
+\[ \Ker \left[ R \to R[S^{-1}] \right] = \left\{r \in R : \exists s \in R, \; sr=0 \right\}. \]
+我们希望取尽可能大的 $S$ 使得 $R[S^{-1}]$ 是 $R$ 的扩环. 前述讨论自然引向以下结果.
+\begin{lemma}
+	设 $S \subset R$ 为乘性子集, $0 \notin S$. 则局部化态射 $R \to R[S^{-1}]$ 是单射当且仅当 $S$ 不含零因子. 另一方面, $R - \{0\}$ 中的所有非零因子构成 $R$ 的乘性子集, 相应的局部化记为
+	\[ R \hookrightarrow \text{Frac}(R), \]
+	而 $\text{Frac}(R)$ 称为 $R$ 的\textbf{全分式环}.
+	
+	当 $R$ 是整环时, $\text{Frac}(R)$ 无非是对 $S := R - \{0\}$ 的局部化; 此时由引理 \ref{prop:localization-units} 知 $\text{Frac}(R)$ 是域: 事实上 $r \neq 0$ 时 $[r,s]^{-1} = [s,r]$; 称此为 $R$ 的\textbf{分式域}或\textbf{商域}. \index{yu@域 (field)!分式域 (field of fractions)}
+\end{lemma}
+
+局部化是交换代数中的常见操作, 它把环里一些元素变得可逆, 是分式域概念的推广. 在代数几何的观点下, 局部化所得的环是原来的环的某些``局部'', 其谱自然地是原来环的谱的子集. 既然如此, 局部化的环通常会变得更简单. 我们也常常通过研究环的各个局部化来研究环本身.
+\begin{definition}\label{def:ring-ideal}\index{lixiang@理想 (ideal)!素理想 (prime ideal)}\index{lixiang@理想 (ideal)!极大理想 (maximal ideal)}
+	含幺交换环 $R$ 的真理想 $I$ 称为
+	\begin{enumerate}
+		\item \textbf{素理想}, 如果 $xy \in I$ 蕴涵 $x \in I$ 或 $y \in I$;\footnote{有些书对于一般环的素理想定义为:对于$R$的理想$I$,如果任意两个理想$A,B$满足$AB\subset I$,则$A\subset I$或者$B\subset I$.当环是含幺交换环时这两种定义是等价的.}
+		\item \textbf{极大理想}, 如果 $I \neq R$ 且不存在严格包含 $I$ 的理想.
+	\end{enumerate}
+	分别记 $R$ 中素理想和极大理想所成的集合为 $\mathrm{Spec}\ R$ 与 $\mathrm{MaxSpec}\ R$, 称为 $R$ 的素谱和极大理想谱.
+\end{definition}
+\begin{proposition}\label{prop:prime-maximal-ideals}
+	设 $I$ 为含幺交换环$R$ 的真理想, 则
+	\begin{enumerate}
+		\item $R/I$ 为整环当且仅当 $I$ 为素理想;
+		\item $R/I$ 为域当且仅当 $I$ 为极大理想.
+	\end{enumerate}
+\end{proposition}
+\begin{corollary}\label{prop:maximal-implies-prime}
+	极大理想必为素理想.其逆一般不成立, 因为整环未必是域.
+\end{corollary}
+\begin{definition}\label{def:PID}\index{zhenghuan@整环 (integral domain)!主理想整环 (PID, principal ideal domain)}
+	设 $I$ 为 $R$ 的理想, 若存在 $a \in R$ 使得 $I = \langle a\rangle = Ra$, 则称 $I$ 为\textbf{主理想}. 若整环 $R$ 的所有理想皆为主理想, 则称 $R$ 为\textbf{主理想整环}.
+\end{definition}
+
+利用\textbf{主理想整环上有限生成模的结构定理},我们可以直接推得\ref{thm:finitely generated Abel}和中国剩余定理.中国剩余定理是初等数论中的常见定理,该定理用环论的语言表述如下:
+\begin{theorem}[中国剩余定理]\label{prop:CRT}\index{zhongguoshengyudingli@中国剩余定理 (CRT, Chinese Remainder Theorem)}
+	设 $R$ 为环, $I_1, \ldots I_n$ 为一族理想. 假设对每个 $i \neq j$ 皆有 $I_i + I_j = R$, 则环同态
+	\begin{align*}
+		\varphi: R \to \prod_{i=1}^n R/I_i, \qquad r \mapsto \left( r \bmod I_i \right)_{i=1}^n
+	\end{align*}
+	诱导出环同构 $R \big/ (\bigcap_{i=1}^n I_i) \cong \prod_{i=1}^n R/I_i$.
+\end{theorem}
+\begin{definition}\label{def:UFD}\index{bukeyue@不可约元 (irreducible element)}\index{zhenghuan@整环 (integral domain)!唯一分解整环 (UFD, unique factorization domain)}
+	整环 $R$ 中的非零元 $r$ 称为\textbf{不可约元}, 如果 $r \notin R^\times$ 而且在 $R$ 中 $d \mid r$ 蕴涵 $\langle d\rangle = \langle r\rangle$ 或 $d \in R^\times$. 不可约性仅取决于 $r$ 在 $\mathcal{P}$ 中的像. 令$\mathcal{P}\coloneqq(R - \{0\})/R^\times$, 以 $\mathring{x} \in \mathcal{P}$ 标记 $x \in R - \{0\}$ 的像如果 $\mathcal{P}$ 的每个元素 $\mathring{r}$ 都能写成
+	\[ \mathring{r} = \prod_{i=1}^n \mathring{p}_i, \quad n \in \mathbb{Z}_{\geq 0} \]
+	其中 $\mathring{p}_i \in \mathcal{P}$ 不可约, 而且 $\{\mathring{p}_1, \dots, \mathring{p}_n \}$ (计重数但不计顺序) 是唯一的, 则称 $R$ 为\textbf{唯一分解整环}; 称 $\mathring{p}_1, \dots, \mathring{p}_n$ (或其原像 $p_1, \dots, p_n \in R$) 是 $\mathring{r}$ (或其原像 $r \in R$) 的不可约因子. 约定 $n=0\iff{\mathring{r}}=1$ .
+	如果整环 $R$ 中的非零元 $p$ 满足 $p \notin R^\times$ 而且 $p \mid ab \iff (p \mid a) \vee (p \mid b)$, 则称 $p$ 是\textbf{素元}. \index{suyuan@素元 (prime element)}
+\end{definition}
+
+有以下结论:
+\begin{enumerate}
+	\item $p$是素元$\iff \langle p\rangle$是素理想;
+	\item 素元是不可约元,当环是UFD时反之也成立;
+	\item 整环$R$是UFD当且仅当主理想满足升链条件且不可约元皆为素元,前者保证不可约分解存在,后者保证此分解唯一.
+	\item UFD中任意两个元素$a,b$都具有最大公因子$(a,b)$和最小公倍元$[a,b]$.
+\end{enumerate}
+\begin{definition}\label{def:Euclidean-ring}\index{zhenghuan@整环 (integral domain)!欧几里得整环 (ED, Euclid Domain)}
+	设 $R$ 为整环, 若存在良序集$L$和函数 $N: R - \{0\} \to L$, 使得对任意 $x \in R$, $d \in R - \{0\}$ 都存在 $q \in R$ 使 $r := x-qd$ 满足 
+	\[ r=0  \quad \text{或者}\quad r \neq 0 \text{且} N(r) < N(d). \]
+	满足此条件的 $R$ 称作\textbf{欧几里得整环}.
+\end{definition}
+\begin{proposition}
+	ED是PID, PID是UFD.
+\end{proposition}
+
+判定一个环是否为PID并不容易. ED推广了$\mathbb{Z}$中的带余除法,从而使判断PID变为判断ED,但并非时时好用,即存在非ED的PID,也存在非PID的UFD.
+\begin{theorem}[裴蜀定理]
+	对于PID中的任意元素$a,b$,存在$x,y$,使得以下等式成立:
+	\[
+	ax+by=(a,b).
+	\]
+\end{theorem}
+
+交换环理论含有丰富的内容,详细请阅读\cite{Atiyah}\cite{Matsumura}.
+%多项式环的内容请参照\cite[2.5]{FK}或\cite[5.6, 5.7]{LW},对称多项式环的内容请参照\cite[附录2.2]{FK}或\cite[5.8]{LW},这对于Galois理论的学习至关重要.

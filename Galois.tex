@@ -1,0 +1,126 @@
+% !TeX encoding = UTF-8
+\documentclass[Unicode]{ctexbook}
+\usepackage{mathrsfs,amsfonts,amssymb,xcolor,amsmath,mathtools,bm,tikz,booktabs,tikz-cd,latexsym}
+\tikzcdset{
+	arrow style=tikz,
+	diagrams={>={Straight Barb[scale=1.5]}}
+}
+\usepackage{fontspec}
+\setmainfont{CMU Serif} %多语言支持
+\usepackage{pdfpages} %插入PDF
+\usetikzlibrary{angles} %画直角
+\usepackage{tipa} %输入音标
+\usepackage{metalogo} %输入\XeLaTeX
+\usepackage{tabularx}
+\usepackage[numbib]{tocbibind}
+\usepackage{multicol}
+\usepackage{makeidx}
+\usepackage{imakeidx}
+\makeindex[intoc]
+\usepackage[hyperindex]{hyperref}
+\hypersetup{
+	colorlinks=true,
+	linkcolor=purple,
+	filecolor=cyan,      
+	urlcolor=cyan,
+	citecolor=red,
+	bookmarks=true,
+}
+\usepackage{cite}
+\bibliographystyle{plain}
+\usepackage{enumitem}
+\setenumerate[1]{itemsep=0pt,partopsep=0pt,parsep=\parskip,topsep=5pt,label=(\roman*)}
+\setitemize[1]{itemsep=0pt,partopsep=0pt,parsep=\parskip,topsep=5pt}
+\setdescription{itemsep=0pt,partopsep=0pt,parsep=\parskip,topsep=5pt}
+%\usepackage{graphicx}
+%\usepackage{wrapfig}
+\title{\textbf{Galois理论}}
+\author{\texttt{Ihaku}}
+\date{}
+\usepackage[
+	type={CC},
+	modifier={by-nc-sa},
+	lang={chinese-utf8},
+	version={4.0},
+]{doclicense}
+%\makeatletter %使\section中的内容左对齐
+%\renewcommand{\section}{\@startsection{section}{1}{0mm}
+	%{0.5\baselineskip}{0.5\baselineskip}{\bf\leftline}}
+%\makeatother
+\renewcommand{\baselinestretch}{1.5}
+\usepackage[a4paper,left=1.25in,right=1.25in,top=1in,bottom=1in]{geometry}  
+%\pagestyle{plain}
+\renewcommand{\thefootnote}{{\color{red}\roman{footnote}}}
+\tikzset{elegant/.style={smooth,samples=50,cyan}}
+\usepackage[hyperref]{ntheorem}
+
+\theorembodyfont{}
+\newtheorem{theorem}{定理}[section] % 按section编号
+\newtheorem{corollary}[theorem]{推论}
+\theorembodyfont{}
+\newtheorem{lemma}[theorem]{引理}
+\theorembodyfont{}
+\newtheorem{proposition}[theorem]{命题}
+\theorembodyfont{}
+\newtheorem{definition}[theorem]{定义}
+\newtheorem{definition-theorem}[theorem]{定义--定理}
+\newtheorem{definition-proposition}[theorem]{定义--命题}
+\newtheorem{hypothesis}[theorem]{假设}
+\newtheorem{conjecture}[theorem]{猜想}
+\theorembodyfont{}
+\newtheorem{example}[theorem]{例}
+\newtheorem{remark}[theorem]{注记}
+\newtheorem{convention}[theorem]{约定}
+\newtheorem{exercise}[theorem]{练习}		% 穿插于文中的习题
+\theorembodyfont{}
+\theoremstyle{nonumberplain}
+\theoremseparator{\enspace}
+\theoremsymbol{\openbox} % 模拟标准的 Proof 环境
+\newtheorem{proof}{证明}
+\DeclareMathOperator{\Hom}{\mathrm{Hom}}
+\DeclareMathOperator{\Aut}{\mathrm{Aut}}
+\DeclareMathOperator{\End}{\mathrm{End}}
+\DeclareMathOperator{\Inv}{\mathrm{Inv}}
+\DeclareMathOperator{\identity}{\mathrm{id}}
+\DeclareMathOperator{\Image}{\mathrm{Im}}
+\DeclareMathOperator{\Ker}{\mathrm{Ker}}
+\DeclareMathOperator{\ord}{\mathrm{ord}}
+\DeclareMathOperator{\sgn}{\mathrm{sgn}}
+\DeclareMathOperator{\Gal}{\mathrm{Gal}}
+\begin{document}
+	\frontmatter
+	\maketitle
+	\thispagestyle{empty}
+	\vspace*{\fill}
+	\doclicenseThis
+	\include{prelude}
+	\tableofcontents
+	\vspace*{\fill}
+	\begin{center}
+		\begin{tikzcd}[cells={nodes={draw=gray}},row sep=huge,column sep=huge]
+		     	          & 0.1 \arrow[d] \arrow[rd] \arrow[ld] &     \\
+			1.1 \arrow[rrddd,gray,dashed,bend right] & 0.2 \arrow[d] \arrow[ld]            & 1.2\arrow[d] \\
+			1.4           & 2.1 \arrow[d] \arrow[rd] \arrow[ld] & 1.3\arrow[ddd,bend left] \\
+			3.1	\arrow[d] \arrow[rd] & 2.2 \arrow[d]\arrow[dr] \arrow[r]                    & 2.3 \arrow[d]\\
+			3.2			  & 3.3           &  4.1 \arrow[d]\arrow[ld]\\
+			\text{A}.1 \arrow[d]&4.2 \arrow[r]&4.3\\
+			%3.2&&\\
+			\text{A}.2 \arrow[r]  & \text{A}.3\arrow[r] &\text{B} \\
+		\end{tikzcd}
+	\end{center}
+	\vspace*{\fill}
+	\mainmatter
+	\include{chapter0}
+	\include{chapter1}
+	\include{chapter2}
+	\include{chapter3}
+	\include{chapter4}
+	\appendix
+	\include{App1}
+	\include{App2}
+	\backmatter
+	{%\footnotesize
+	\indexprologue{兹给出名词索引及其英文翻译,以供参考.中文术语按汉语拼音排序.}
+	\printindex}
+	\bibliography{Galois}
+\end{document}

@@ -1,0 +1,145 @@
+\chapter{尺规作图}
+尺规作图(英语：compass-and-straightedge 或 ruler-and-compass construction)是起源于古希腊的数学课题.只使用圆规和直尺,并且只准许使用有限次,来解决不同的平面几何作图题.
+
+值得注意的是,以上的``直尺''和``圆规''是抽象意义的,跟现实中的并非完全相同,具体而言,有以下的限制:
+\begin{itemize}
+	\item 直尺必须没有刻度,无限长,只可以做过两点之直线.
+	\item 圆规可以开至无限宽,但上面亦不能有刻度.它只可以拉开成你之前构造过的长度或一个任意的长度.
+\end{itemize}
+
+尺规作图的研究,促成数学上多个领域的发展.有些数学结果就是为解决古希腊三大名题而得出的副产品,对尺规作图的探索推动了对圆锥曲线的研究,并发现了一批著名的曲线.
+
+若干著名的尺规作图已知是不可能的,例如``尺规作图三大难题'':
+\begin{enumerate}
+	\item \textbf{三等分角(angle trisection)};
+	\item \textbf{倍立方(doubling the cube/Delian problem)};
+	\item \textbf{化圆为方(squaring the circle)}.
+\end{enumerate}
+
+而当中很多不可能的例子是利用了19世纪出现的Galois理论以证明.尽管如此,仍有很多业余者尝试这些不可能的题目.
+\section{规矩数}
+\begin{definition}\index{guijushu@规矩数 (constructable number)}
+	称平面中可用尺规作图的方式作出的点为\textbf{规矩点}\footnote{[矩]字的繁体字榘,是矢字,巨字和木字组成.矢字代表短尺,巨是指巨大,木是指用木制作的尺,榘是用来量方的尺.故而``规矩点''即为用尺规构造出的点.}.为确定原点$O$和单位距离1,可事先给定平面中的两点并记为$\{(0,0),(1,0)\}$,则称由此生成的规矩点的横纵坐标表示的数为\textbf{规矩数},又称\textbf{可造数}.由于尺规可以在给定的坐标系中做投影映射,故规矩数又为尺规作图中圆规可以丈量长度的数.
+\end{definition}
+
+容易验证,有限个规矩数相加/减/乘/除(除数不得为0)仍为规矩数,故所有的规矩数构成了一个域,而这个域包含$\mathbb{Q}$.同时,一个规矩数的二次方根也为规矩数.
+
+事实上,规矩数仅能完成以上五种操作,被称为尺规作图公法,下面我们来简单复现这些操作:
+
+对于加减法是显然的,乘除法则需用到相似三角形,如下图所示,以$(1,0)$为垂足画长度为$a$的线段得到$A(1,a)$,再以$(b,0)$为垂足画垂线交$OA$的延长线于$B(b,ab)$点,即得到$ab$.除法则是相反操作,不赘述.
+
+\begin{center}
+	\begin{tikzpicture}[scale=2]
+		\coordinate[label=below left:$O$] (O) at (0,0);
+		\coordinate[label=below:$1$] (A1) at (1,0);
+		\coordinate[label=above left:$A$] (A) at (1,0.7);
+		\coordinate[label=below:$b$] (B1) at (2,0);
+		\coordinate[label=above:$B$] (B) at (2,1.4);
+		\draw 
+		(O) to (B1) to (B) to (O)
+		(A1) to (A)
+		pic [draw,thick,red,scale=0.5] {right angle = O--A1--A}
+		pic [draw,thick,red,scale=0.5] {right angle = O--B1--B};
+	\end{tikzpicture}
+\end{center}
+
+对于开根号则需用到射影定理,对于如下的图形,我们有
+\[AC^2=OA\cdot AB,\]
+故只需取$OA=1,AB=a$,则有$AC=\sqrt{a}$.
+\begin{center}
+	\begin{tikzpicture}[scale=2]
+		\coordinate[label=below left:$O$] (O) at (0,0);
+		\coordinate[label=below:$A$] (A) at (1,0);
+		\coordinate[label=below right:$B$] (B) at (2.41,0);
+		\coordinate[label=left:$C$] (C) at (1,1.2);
+		\draw 
+		(O) to (B) to (C) to (O)
+		(A) to (C)
+		pic [draw,thick,red,scale=0.5] {right angle = O--A--C}
+		pic [draw,thick,red,scale=0.5] {right angle = O--C--B};
+	\end{tikzpicture}
+\end{center}
+
+于是利用二次扩张的定义\ref{def:2 ext}和望远镜公式\ref{def:telescope}和立刻得到如下引理.
+\begin{lemma}\label{lem:2^s}
+	任何规矩数$r$对应的域扩张扩张$\mathbb{Q}(r)/\mathbb{Q}$的次数都是2的方幂,即
+	\[
+	[\mathbb{Q}(r):\mathbb{Q}]=2^s,\quad s\in \mathbb{N}.
+	\]
+\end{lemma}
+\section{三大难题}
+\subsection{三等分角}
+\begin{quotation}
+	\textit{能否用尺规三等分任意角?}
+\end{quotation}
+
+显然,角$\theta$能否被尺规作出取决于$\cos \theta$是否为规矩数.不妨设$\cos3\theta$为规矩数,由三倍角公式
+\[
+\cos 3\theta=4\cos^3\theta-3\cos\theta,
+\]
+即$\cos\theta$多项式$f(x)=4x^3-3x-\cos3\theta$的根,当$f$在$\mathbb{Q}(\cos3\theta)$上不可约时,有
+\[
+[\mathbb{Q}(\cos\theta,\cos3\theta):\mathbb{Q}]=[\mathbb{Q}(\cos\theta,\cos3\theta):\mathbb{Q}(\cos3\theta)][\mathbb{Q}(\cos3\theta):\mathbb{Q}]=3\cdot2^s,
+\]
+于是由引理\ref{lem:2^s}和\ref{def:minimal polynomial}知$\cos\theta$非尺规数.所以能三等分角当且仅当$f$在$\mathbb{Q}(\cos3\theta)$上可约.
+
+下面我们只需要找到一个$\cos3\theta$使得$f$在$\mathbb{Q}(\cos3\theta)$上不可约.这好办,取$\theta=\pi/18$.
+\subsection{倍立方}
+\begin{quotation}
+	\textit{能否用尺规作一立方体的棱长,使其体积等于一给定立方体的两倍?}
+\end{quotation}
+
+若给定立方体的棱长为$a$,作出立方体的棱长$b$是多项式$f(x)=x^3-2a^3$,当这个多项式在$\mathbb{Q}(a)$上不可约时,与之同理有$b$不是规矩数.所以能倍立方当且仅当$f$在$\mathbb{Q}(a)$上可约.
+
+下面我们只需要找到一个$a$使得$f$在$\mathbb{Q}(a)$上不可约.这更好办,取$a=1$.
+\subsection{化圆为方}
+\begin{quotation}
+	\textit{能否用尺规作一正方形，其面积等于一给定圆面积?}
+\end{quotation}
+
+若给定正方形的边长为尺规数$a$,作出立方体的棱长$b$是多项式$f(x)=x^2-\pi a^2$,所以
+\[
+[\mathbb{Q}(b):\mathbb{Q}]=[\mathbb{Q}(b):\mathbb{Q}(a)][\mathbb{Q}(a):\mathbb{Q}]=[\mathbb{Q}(\sqrt{\pi}):\mathbb{Q}]2^s=[\mathbb{Q}(\pi):\mathbb{Q}]2^{s+1}=\infty,
+\]
+于是由引理\ref{lem:2^s}和\ref{def:minimal polynomial}知$b$非尺规数.
+
+\begin{remark}
+	这里需用到Lindemann–Weierstraß定理来说明$\pi$的超越性.
+\end{remark}
+\section{正多边形}
+\begin{quotation}
+	\textit{能否用尺规作正$n$边形?}
+\end{quotation}
+
+该问题与三大难题并列, Gauss (1777-1855)十九岁时解决了这个问题, 1801年他又给出了正十七边形的构造方法.
+
+为解决这个问题,我们需要扩充规矩数的定义.
+\begin{definition}\index{guijushu@规矩数 (constructable number)!复规矩数 (complex constructable number)}
+	称$z\in\mathbb{C}$为\textbf{复规矩数},若其在复平面上位于规矩点.
+\end{definition}
+
+可以证明,复规矩数的许多性质和规矩数是一样的.
+
+而为了作出正$n$边形,则需$n$次本原单位根$\zeta_n=\mathrm{e}^{2\pi\mathrm{i}/n}$是复规矩数.而$\zeta_n$在$\mathbb{Q}$上的极小多项式为分圆多项式$\Phi_n(x)$,而$\deg\Phi_n=\varphi(n)$.由引理\ref{lem:2^s}和\ref{def:minimal polynomial}可知能作出正$n$边形当且仅当$\varphi(n)$是2的方幂.
+
+利用数论中的知识,对于素数分解$n=2^kp_1^{k_1} p_2^{k_2} \cdots p_r^{k_r}$,其中$p_1,p_2,\dots,p_r$为奇素数,有
+\[
+\varphi(n)=2^{k-1}p_1^{k_1-1} p_2^{k_2 - 1} \cdots p_r^{k_r - 1} (p_1 - 1) (p_2 - 1) \cdots (p_r - 1),
+\]
+故$\varphi(n)$为2的方幂当且仅当$k_1=k_2=\cdots=k_r=1$,且$p_1,p_2,\dots,p_r$为Fermat素数,即形如$1+2^s,s>0$.由$n$次方和公式知这里$s$无大于1的奇数因子,故Fermat素数必形如$F_n=1+2^{2^n},n\geqslant0$.前5个Fermat素数为:
+\[
+F_0=3,\quad F_1=5,\quad F_2=17,\quad F_3=257,\quad F_4=65537,
+\]
+但$F_5$和$F_6$不再是素数.
+
+但请注意,这里只得到了可尺规作出正$n$边形的充分条件, Gauss认为这个条件也是必要条件,但是他一直没有发表他的证明. Pierre Wantzel 于1837年给出了一份完整的必要性的证明,因此这个定理被叫做 Gauss–Wantzel 定理.
+
+为证必要性,我们需要下述引理.
+\begin{lemma}\label{lem:2^s2}
+	$z\in\mathbb{C}$是复规矩数当且仅当$z$属于$\mathbb{Q}$的$2^s(s\geqslant 0)$次正规扩张.
+\end{lemma}
+
+因为$\mathbb{Q}(i,\zeta_n)$是$(x^2+1)(x^n-1)$在$\mathbb{Q}$上的分裂域,故$\mathbb{Q}(i,\zeta_n)/\mathbb{Q}$是正规扩张,又$[\mathbb{Q}(\zeta_n):\mathbb{Q}]=\varphi(n)$是2的方幂,故$[\mathbb{Q}(i,\zeta_n):\mathbb{Q}]$是2的方幂.即满足引理\ref{lem:2^s2}的条件,于是我们得到了:
+\begin{theorem}[Gauss–Wantzel]
+	正$n$边形能被尺规作出当且仅当$n$是2的方幂和任意个(可为0个)相异费马素数的乘积.
+\end{theorem}

@@ -1,0 +1,117 @@
+\chapter{方程的根式解问题}
+Abel-Ruffini定理是代数学中的重要定理.它指出,五次及更高次的多项式方程没有一般的求根公式,即不是所有这样的方程都能由方程的系数经有限次四则运算和开方运算求根. Lagrange首先预见了高次方程的求根公式不存在,但始终无法证明; Paul Ruffini前者在1799年给出了一个不完整的证明,这个证明有严重错误; Niels Abel则在1824年给出了完整的证明. 
+
+Galois在此基础上得到了更深刻的结果,并且就此问题引入的概念和方法,从推动学科发展的意义上说,兼具革命性和建设性.在计算机科学日益发展的今天,我们对高次方程的根式解并不过分关心,但Galois理论推动的在其它领域的建设依旧不可估量.
+\section{方程的伽罗瓦群}
+\begin{definition}
+	设$E$是域$K$上$n$次多项式$f$在$K$上的分裂域,其$n$个根记为$r_1,r_2,\dots,r_n$,故$E=K(r_1,\dots,r_n)$,将$\Gal(E/K)$称为多项式$f$或方程$f(x)=0$在$K$上的Galois群,并记作$\Gal(f,K)$,或简写为$\Gal(f)$.则每个$\sigma\in\Gal(f)$是根集$R\coloneqq\{r_1,r_2,\dots,r_n\}$上的置换,故$\Gal(f)$可看作$\mathfrak{S}_n$的子群在$R$上的作用.当$f$可分时则$E/K$为Galois扩张.
+\end{definition}
+
+事实上,若$\sigma\in\mathfrak{S}_n$,则$\sigma\in\Gal(f)$当且仅当$\sigma$保持$R$之间的所有代数关系,即若
+\[
+g(r_1,r_2,\dots,r_n)=0,\forall g\in K[x_1,x_2\dots,x_n],
+\]
+则$g(\sigma(r_1),\sigma(r_2),\dots,\sigma(r_n))=0$.这也是Galois本人在\cite{Galois}中对$\Gal(f)$的定义,这反映了根集$R$之间的对称.今天所采用的定义来自于Dedekind,这一突出贡献不仅使得Galois理论取得了现代形式,也使Galois群的计算更具操作性.
+\begin{definition}\index{panbieshi@判别式 (discriminant)}
+	设非零多项式$f=a_nx^n+\cdots+a_1x+a_0$在$K$上分裂,其$n$个根记为$r_1,r_2,\dots,r_n$,记$A$为这些根所对应的Vandermonde矩阵,记$f$的Vandermonde行列式为
+	\[
+	|A|=\prod_{i<j}\left(r_i-r_j\right),
+	\]
+	则其\textbf{判别式}定义为
+	\[
+	D(f)=a_n^{2n-2}|A|^2=a_n^{2n-2}|A^TA|=a_n^{2n-2}\prod_{i<j}\left(r_i-r_j\right)^2,
+	\]
+	显然$D(f)=0$当且仅当$f$可分.
+\end{definition}
+
+更多内容请参考\cite[\S 4.5]{LJ}.
+\begin{lemma}
+	设域$K$的特征不为2, $f$是$K$上的首一$n$次可分多项式, $E$为$f$在$K$上的分裂域,由于偶置换不改变$f$的Vandermonde行列式的符号,故
+	\[
+	\Inv(\Gal(f)\cap\mathfrak{A}_n)=K(\sqrt{D(f)}),
+	\]
+	于是
+	\[
+	\Gal(f)\subseteq \mathfrak{A}_n\Longleftrightarrow \sqrt{D(f)}\in K\Longleftrightarrow D(f)\in K^2\coloneqq\{x|x^2\in F\}.
+	\]
+\end{lemma}
+\begin{lemma}
+	$f$是域$K$上的首一$n$次可分多项式, $E$为$f$在$K$上的分裂域, $f$在$E$上的$n$个根记为$r_1,r_2,\dots,r_n$则$f$在$K$上不可约$\Longleftrightarrow \Gal(f)$在$\{r_1,r_2,\dots,r_n\}$上传递,即为$\mathfrak{S}_n$的传递子群,阶为$[E:K]$.
+\end{lemma}
+
+对于$n=3$.由于$\mathfrak{S}_3$的传递子群仅有$\mathfrak{S}_3$和$\mathfrak{A}_3$,故$D(f)\notin F^2\Longleftrightarrow \Gal(f)=\mathfrak{S}_3$.
+
+对于$n=4$. $\mathfrak{S}_4$的传递子群仅有$\mathfrak{S}_4,\mathfrak{A}_4,D_8,C_4,W=\{1,(12)(34),(13)(24),(14)(23)\}$,而$\Gal(f)$的具体分析较为复杂,可参照\cite[p.160]{FK}.
+
+对于$n>4$的多项式, $f$的Galois群计算较为困难.
+\section{伽罗瓦群的计算}
+\begin{lemma}\label{lem:sym-gal}
+	设$K$是域, $x_1,x_2,\dots,x_n$是独立的不定元, $e_1,e_2,\dots,e_n$是$x_1,x_2,\dots,x_n$的初等对称多项式(见\ref{def:ele-sym}),则域扩张$K(x_1,x_2,\dots,x_n)/K(e_1,e_2,\dots,e_n)$是有限Galois扩张,且
+	\[
+	\Gal(K(x_1,x_2,\dots,x_n)/K(e_1,e_2,\dots,e_n))=\mathfrak{S}_n;\qquad\Inv(\mathfrak{S}_n)=K(e_1,e_2,\dots,e_n).
+	\]
+	
+	事实上,该引理是对称多项式基本定理\ref{thm:sym-basic}的一个推论.
+\end{lemma}
+
+有了该引理,我们就可构造满足$\Gal(f)=\mathfrak{S}_n$的多项式方程,事实上这就是一般$n$次方程.为了界定一般性,我们用不定元$t_1,t_2,\dots,t_n$来表示系数,则有以下定理.
+\begin{lemma}\label{lem:trivial-equation}
+	对于任一域$K$, $f(x)=x^n-t_1x^{n-1}+\dots+\left(-1\right)^nt_n$是域$K(t_1,t_2,\dots,t_n)$上的$n$次不可约可分多项式,则$\Gal(f)=\mathfrak{S}_n$.
+\end{lemma}
+\begin{proposition}
+	$f$是$\mathbb{Q}$上的$p$次不可约多项式, $p$为素数,且$f$恰有两复根,则$\Gal(f)=\mathfrak{S}_p$.
+\end{proposition}
+\begin{example}[Brauer]
+	设$p$是奇素数,$n_1<\cdots<n_{p-2}$均是偶数, $m$是满足$2m>\sum n_{i}^2$的正偶数.令
+	\[
+	f(x)=(x^2+m)(x-n_1)\cdots(x-n_{p-2})-2,
+	\]
+	则$\Gal(f,\mathbb{Q})=\mathfrak{S}_p$.
+\end{example}
+\begin{proposition}
+	设域$K$的特征为零或与$n$互素,则$K$上多项式$f(x)=x^n-1$的Galois群$\Gal(f)\leqslant\mathbb{Z}_n^\times$,从而是Abel群.进一步,$\Gal(f)=\mathbb{Z}_n^\times$当且仅当分圆多项式$\Phi_n$是$K$上的不可约多项式.特别地,$\Gal(\Phi_n,\mathbb{Q})=\mathbb{Z}_n^\times$.
+\end{proposition}
+
+Galois反问题是代数和数论中富有意义和持久兴趣的研究课题,即:对于任意有限群$G$,找到域扩张使得其对应的Galois群恰为$G$.
+
+\begin{corollary}
+	利用Caylay定理\ref{thm:Caylay}和引理\ref{lem:sym-gal},任一有限群$G$均是某个域$K$上可分多项式的Galois群,其中$K$的特征任意.
+\end{corollary}
+
+然而,对于任意有限群$G$,是否存在Galois扩张$E/\mathbb{Q}$,使得$\Gal(E/\mathbb{Q})=G$?
+
+1954年苏联数学家И. P. Шaфapeвич利用群论和代数数论证明了当$G$为有限可解群时答案是肯定的; J. G. Thompson证明了对于中心平凡且有有理强刚性共轭类组的有限群答案也是肯定的;他还证明了对魔群(monster group)的正确性.但对于任意有限群而言, Galois反问题依旧悬而未决.
+\section{五次以上方程的根式不可解性}
+\begin{definition}\index{yukuozhang@域扩张 (field extension)!根式扩张 (radical extension)}\index{ta@塔 (tower)}\index{ta@塔 (tower)!根塔 (radical tower)}
+	域扩张$E/K$称为\textbf{根式扩张},若$E=K(d)$,并且存在自然数$n$使得$d^n\in F$.特别地,若$n=2$,则称为\textbf{二次根式扩张}.域扩张序列
+	\[
+	K_1\subseteq K_2\subseteq \cdots\subseteq K_r,
+	\]
+	称作域的扩张\textbf{塔},若满足$K_{i+1}/K_i(1\leqslant i\leqslant r-1)$是根式扩张,则称该塔为\textbf{根塔},若$K_{i+1}/K_i(1\leqslant i\leqslant r-1)$均为二次根式扩张,则称该根塔为\textbf{平方根塔}.
+\end{definition}
+\begin{definition}\index{genshikejie@根式可解 (radical sovable)}
+	$f$是域$K$上的首一多项式, $E$为$f$在$K$上的分裂域,方程$f(x)=0$称作在$K$上\textbf{根式可解},是指存在根塔
+	\[
+	K=K_1\subseteq K_2\subseteq \cdots\subseteq K_r=F,
+	\]
+	且$E\subseteq F$.
+\end{definition}
+\begin{lemma}
+	设$p$为素数,域$K$的特征不等于$p$, 若$p$次本原单位根$\zeta_p\in F$, $E/F$为$p$次循环Galois扩张,则$E/F$为根式扩张.
+\end{lemma}
+\begin{lemma}
+	设域扩张$E/K$, $f$是$K$上的多项式,则$\Gal(f,E)\leqslant\Gal(f,K)$.
+\end{lemma}
+\begin{lemma}
+	设$E/K$为有限可分扩张,$M$为$E$在$K$上的正规闭包.若$E/K$有根塔,则$M/K$也有根塔.
+\end{lemma}
+
+利用以上三个引理可以得到如下Galois大定理.
+\begin{theorem}[Galois大定理]
+	设$K$为特征零域, $f$是域$K$上的首一多项式,则方程$f(x)=0$在$K$上根式可解当且仅当$\Gal(f)$是可解群.
+\end{theorem}
+
+利用该定理和引理\ref{lem:trivial-equation}及推论\ref{prop:S_n-unsolvable}立刻得
+\begin{theorem}[Abel-Ruffini]
+	对于$n\geqslant5$, $K$为特征零域, $n$次一般方程$f(x)=x^n-t_1x^{n-1}+\dots+\left(-1\right)^nt_n=0$在$K(t_1,t_2,\dots,t_n)$上根式不可解.
+\end{theorem}
